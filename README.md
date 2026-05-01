@@ -27,6 +27,7 @@ source .venv/bin/activate
 # 🔧 Fix for egl-probe + modern CMake
 export CMAKE_ARGS="-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
 
+# ONLY FOR TPU AND XLA
 # 📦 Install dependencies
 uv pip install "lerobot[libero]" \
   huggingface_hub \
@@ -39,6 +40,20 @@ uv pip install "lerobot[libero]" \
   libtpu==0.0.17 \
   torch==2.8.0 torch_xla==2.8.0 torchvision \
   -f https://storage.googleapis.com/libtpu-releases/index.html
+
+
+# ONLY CUDA
+# 📦 Install dependencies
+uv pip install "lerobot[libero]" \
+  huggingface_hub \
+  torch \
+  sentence-transformers \
+  transformers \
+  pyarrow \
+  pandas \
+  Pillow \
+  torch==2.8.0 \
+  torchvision 
 
 ```
 ---
@@ -317,7 +332,7 @@ class SimpleTransformer(nn.Module):
 
 ```python
 def main():
-    DEVICE = torch_xla.device()   # TPU
+    DEVICE = torch_xla.device()   # TPU or CUDA
     DATASET_ROOT = "dataset"
 
     # --- 1. Load dataset ---
